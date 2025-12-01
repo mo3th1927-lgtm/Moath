@@ -2,129 +2,244 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>مشروع ريادة الأعمال</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة الغياب الأكاديمي - ألوان الكلية التقنية</title>
+    
     <style>
+        /* 1. التنسيقات العامة والوضع الداكن */
+        :root {
+            /* الألوان المستوحاة من شعار الكلية التقنية (الأخضر والأزرق الداكن) */
+            --bg-dark: #1f3330; /* أخضر داكن جداً */
+            --container-bg: #2b4542; /* أخضر داكن للحاوية */
+            --text-light: #e6f7f5;
+            --primary-color: #00a896; /* أخضر زمردي/بترولي أساسي */
+            --secondary-color: #006b5f; /* أخضر أعمق */
+            --input-bg: #3c5a57; /* خلفية المدخلات */
+            --warning-color: #ff9999; /* وردي ناعم للتنبيه (الحرمان) */
+            --blue-accent: #5aa6b6; /* لون أزرق بارد ثانوي */
+        }
+
         body {
-            font-family: "Cairo", sans-serif;
-            background: linear-gradient(135deg, #6a11cb, #2575fc);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            font-family: 'Arial', sans-serif;
             margin: 0;
-            padding-top: 30px;
+            padding: 20px;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            text-align: right;
+            line-height: 1.6;
+            min-height: 100vh;
         }
 
-        .box {
-            background: white;
-            width: 350px;
-            padding: 25px;
-            border-radius: 18px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            text-align: center;
+        /* 2. حاوية التطبيق */
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 30px;
+            background: var(--container-bg);
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+            border: 2px solid var(--secondary-color);
         }
-
+        
+        /* 3. العناوين */
         h2 {
-            margin-bottom: 10px;
-            color: #333;
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            font-size: 1.8em;
+            border-bottom: 3px solid var(--secondary-color);
         }
 
-        input {
-            width: 92%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            font-size: 16px;
+        /* 4. المدخلات والتسميات */
+        label {
+            display: block;
+            margin-bottom: 5px;
+            margin-top: 25px;
+            font-weight: bold;
+            color: var(--blue-accent);
+            font-size: 1.05em;
         }
 
-        input:focus {
-            border-color: #2575fc;
-            box-shadow: 0 0 8px rgba(37, 117, 252, 0.4);
+        input[type="number"] {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            box-sizing: border-box;
+            font-size: 1.1em;
+            text-align: right;
+            background-color: var(--input-bg);
+            color: var(--text-light);
+            border: 2px solid var(--primary-color);
+            transition: border-color 0.3s;
+        }
+        input[type="number"]:focus {
+            border-color: var(--blue-accent);
             outline: none;
         }
 
-        button {
-            width: 96%;
-            padding: 13px;
-            background: #2575fc;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            cursor: pointer;
-            margin-top: 5px;
+        /* 5. الأزرار */
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
         }
-
-        button:hover {
-            background: #1e63d8;
-        }
-
-        #result {
-            margin-top: 18px;
-            font-size: 16px;
+        button, .pdf-link-button {
+            flex-grow: 1;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-size: 1.05em;
             font-weight: bold;
-            color: #444;
-            text-align: left;
-            word-break: break-word;
-        }
-
-        #pdfLink {
-            margin-top: 20px;
-            font-size: 16px;
-            color: #2575fc;
+            cursor: pointer;
+            border: none;
             text-decoration: none;
-            display: inline-block;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s, transform 0.1s;
         }
 
-        #pdfLink:hover {
-            text-decoration: underline;
+        .calculate-button {
+            background-color: var(--primary-color); /* الأخضر الزمردي */
+            color: var(--bg-dark);
+        }
+        .calculate-button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .pdf-link-button {
+            background-color: var(--blue-accent); /* الأزرق البارد */
+            color: white;
+        }
+        .pdf-link-button:hover {
+            background-color: #4a8d9a;
+        }
+
+        /* 6. قسم النتائج */
+        #results {
+            margin-top: 40px;
+            padding: 25px;
+            border-radius: 15px;
+            background-color: var(--input-bg); /* خلفية النتائج */
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .result-item {
+             margin-bottom: 15px;
+             padding-bottom: 10px;
+             border-bottom: 1px dashed #4a6663;
+             line-height: 1.6;
+             font-size: 1.1em;
+        }
+        .result-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        /* 7. تلوين النتائج */
+        .value-label {
+            color: var(--blue-accent);
+            font-weight: normal;
+        }
+        .total-hours {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        .allowed-days {
+            color: #b0e0e6; /* أزرق فاتح جداً هادئ */
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .expulsion-day {
+            color: var(--warning-color);
+            font-weight: bold;
+            font-size: 1.4em;
+        }
+        
+        /* 8. للتجاوب مع الشاشات الصغيرة */
+        @media (max-width: 600px) {
+            .container {
+                margin: 0 10px;
+                padding: 20px;
+            }
+            .button-group {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="box">
-    <h2>مشروع ريادة الأعمال</h2>
+<div class="container">
+    <h2><span style="font-size: 1.2em;">⚙</span> حاسبة الغياب الأكاديمي</h2>
 
-    <input type="number" id="hours" placeholder="ساعات المادة">
-    <input type="number" id="weeks" placeholder="عدد أسابيع الفصل">
-    <input type="number" id="fixed" value="20" readonly>
+    <label for="creditHours">عدد ساعات المادة (لكل أسبوع):</label>
+    <input type="number" id="creditHours" value="3" min="1" required>
 
-    <button id="calcBtn">احسب الغياب</button>
+    <label for="studyWeeks">عدد أسابيع الدراسة في الفصل:</label>
+    <input type="number" id="studyWeeks" value="19" min="1" required>
 
-    <div id="result"></div>
+    <div class="button-group">
+        <button class="calculate-button" onclick="calculateAbsence()">
+            <span style="margin-left: 8px;">حسـاب</span> 
+            <span style="font-size: 1.2em;">✅</span> 
+        </button>
+        
+        <a href="شرح لي طريقت استخدام البرنامج.pdf.pdf" target="_blank" class="pdf-link-button">
+            <span style="margin-left: 8px;">فتح ملف الشرح (PDF)</span> 
+            <span style="font-size: 1.2em;">📄</span>
+        </a>
+    </div>
 
-    <a id="pdfLink" href="شرح لي استخدام البرنامج.pdf" target="_blank">افتح الملف PDF</a>
+    <div id="results">
+        <p class="result-item" style="text-align: center;">النتائج ستظهر هنا بعد الضغط على "حساب".</p>
+    </div>
 </div>
 
 <script>
-document.getElementById("calcBtn").addEventListener("click", function() {
-    let hours = parseFloat(document.getElementById("hours").value);
-    let weeks = parseFloat(document.getElementById("weeks").value);
-    let fixed = parseFloat(document.getElementById("fixed").value);
+    function calculateAbsence() {
+        // 1. استرجاع القيم
+        const H = parseFloat(document.getElementById('creditHours').value); 
+        const W = parseFloat(document.getElementById('studyWeeks').value); 
+        const MAX_ABSENCE_PERCENT = 20; // الحد الأقصى للغياب هو 20%
+        const FIXED_DIVISOR = 100;
+        const resultsDiv = document.getElementById('results');
 
-    if (!hours || !weeks) {
-        document.getElementById("result").innerHTML = "أدخل القيم كاملة!";
-        return;
+        // التحقق من المدخلات
+        if (isNaN(H) || isNaN(W) || H <= 0 || W <= 0) {
+            resultsDiv.innerHTML = '<p class="expulsion-day" style="text-align: center;">⚠ الرجاء إدخال قيم صحيحة وموجبة.</p>';
+            return;
+        }
+
+        // 2. الحساب
+        // إجمالي ساعات الغياب المسموحة = (ساعات المادة * عدد الأسابيع * 20) / 100
+        const totalAllowedAbsenceHours = (H * W * MAX_ABSENCE_PERCENT) / FIXED_DIVISOR;
+        
+        // عدد أيام الغياب المسموحة (نأخذ العدد الصحيح بالتقريب للأسفل)
+        const maxAllowedAbsenceDays = Math.floor(totalAllowedAbsenceHours / H);
+
+        // يوم الحرمان (اليوم الذي تتجاوز فيه الحد)
+        const expulsionDay = maxAllowedAbsenceDays + 1;
+
+        // 3. عرض النتائج
+        resultsDiv.innerHTML = `
+            <div class="result-item">
+                <span class="value-label">إجمالي ساعات الغياب المسموحة:</span> 
+                <span class="total-hours">${totalAllowedAbsenceHours.toFixed(2)} ساعة</span>
+            </div>
+            <div class="result-item">
+                <span class="value-label">أيام الغياب المسموحة (بالكامل):</span> 
+                <span class="allowed-days">${maxAllowedAbsenceDays} أيام</span>
+            </div>
+            <div class="result-item" style="padding-top: 10px; text-align: center;">
+                <span class="value-label" style="font-size: 1em; display: block; margin-bottom: 5px;">يوم الحرمان (اليوم الذي تتجاوز فيه الحد):</span> 
+                <span class="expulsion-day">اليوم ${expulsionDay} من الغياب</span>
+            </div>
+        `;
     }
-
-    let totalAbsent = (hours * weeks * fixed) / 100;
-    let remaining = totalAbsent;
-    let dailyDeduction = hours;
-    let text = الغياب المحتسب: ${totalAbsent.toFixed(2)}<br>;
-
-    let day = 1;
-    while (remaining >= dailyDeduction) {
-        remaining -= dailyDeduction;
-        text += بعد اليوم ${day}: ${remaining.toFixed(2)} ساعة متبقية<br>;
-        day++;
-    }
-
-    text += اليوم ${day} حرمان;
-
-    document.getElementById("result").innerHTML = text;
-});
 </script>
 
 </body>
